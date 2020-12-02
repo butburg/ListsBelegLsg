@@ -114,6 +114,15 @@ class IntListTest extends AnyFunSuite {
     }) === 6)
   }
 
+  test("testReduceLeft") {
+    assert(SinglyLinkedIntList(1, 2, 3).reduceLeft(_ + _) === 6)
+  }
+
+  test("testReduceLeft -") {
+    SinglyLinkedIntList(1, 2, 3).reduceLeft(_ - _)
+    assert(SinglyLinkedIntList(1, 2, 3).reduceLeft(_ - _) === -4)
+  }
+
 
   test("testReduceRight") {
     assert(SinglyLinkedIntList(1, 2, 3).reduceRight(_ + _) === 6)

@@ -1,10 +1,61 @@
 import scala.collection.{immutable, mutable}
 
+
 val l = List(1, 2, 3, 4, 5, 6) //L
 
 val example = Map(2 -> List(2, 5), 1 -> List(1, 4), 0 -> List(3, 6))
 //l.groupBy(_ % 3) -> 2,1,0 F
 
+
+
+
+//SOLUTION
+//mutable but values only
+def groupByS1[U,L](f: L => U,list: Iterable[L]):mutable.Map[U,List[L]]= {
+  val res= mutable.Map[U,List[L]]()
+  for (x<-list){
+    //val groupByValue = f(x)
+    //res.update(groupByValue,x::res.getOrElse(groupByValue,List()))
+    if(res.contains(f(x))){
+      res.update(f(x),List().appended(x))
+    } else res.update(f(x),List(x))
+  }
+  res
+  //res.toMap.mapValues(_.reverse)
+}
+
+// :'( just cant test my functions:
+//!%§&"$§%$%U/%⅝¤⅜:
+groupByS1(_: Int,l)
+
+l.groupBy(_%3)
+
+
+//immutable and variable
+def groupByS2[U,L](list: List[L],f: L => U):Map[U,List[L]]= {
+  var res= immutable.Map[U,List[L]]()
+  for (x<-list){
+    //val groupByValue = f(x)
+    //res = res.updated(groupByValue,x::res.getOrElse(groupByValue,List()))
+    if(res.contains(f(x))){
+      res = res.updated(f(x),List().appended(x))
+    } else res = res.updated(f(x),List(x))
+  }
+  res //.mapValues(_.reverse)
+}
+
+//immutable and aggregation with foldLeft
+def groupByS3[U,L](list: List[L],f: L => U):Map[U,List[L]]= {
+  list.foldLeft(immutable.Map[U,List[L]]()){
+    (map, x) =>
+      val groupByVal = f(x)
+      map.updated(groupByVal, x::map.getOrElse(groupByVal,List.empty))
+  }//.mapValues(_.reverse)
+
+}
+
+
+//my try:
 
 //mutable but val
 def groupBy1[L](list: List[L], f: L => L, mp: mutable.Map[L, List[L]]): mutable.Map[L, List[L]] = {
