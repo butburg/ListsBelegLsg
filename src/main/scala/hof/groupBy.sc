@@ -7,54 +7,54 @@ val example = Map(2 -> List(2, 5), 1 -> List(1, 4), 0 -> List(3, 6))
 //l.groupBy(_ % 3) -> 2,1,0 F
 
 
-
-
 //SOLUTION
 //mutable but values only
-def groupByS1[U,L](f: L => U,list: Iterable[L]):mutable.Map[U,List[L]]= {
-  val res= mutable.Map[U,List[L]]()
-  for (x<-list){
-    //val groupByValue = f(x)
-    //res.update(groupByValue,x::res.getOrElse(groupByValue,List()))
-    if(res.contains(f(x))){
-      res.update(f(x),List().appended(x))
-    } else res.update(f(x),List(x))
+def groupByS1[U, L](list: Iterable[L])(f: L => U): mutable.Map[U, List[L]] = {
+  val res = mutable.Map[U, List[L]]()
+  for (x <- list) {
+    val groupByValue = f(x)
+    res.update(groupByValue, x :: res.getOrElse(groupByValue, List()))
   }
   res
-  //res.toMap.mapValues(_.reverse)
 }
 
 // :'( just cant test my functions:
 //!%§&"$§%$%U/%⅝¤⅜:
-groupByS1(_: Int,l)
-
-l.groupBy(_%3)
+//with , not working: groupByS1(l,_%3)
+//OKOKOKOK ju NEEED ()() double parameter to get this done:
+groupByS1(l)(_ % 3)
+l.groupBy(_ % 3)
 
 
 //immutable and variable
-def groupByS2[U,L](list: List[L],f: L => U):Map[U,List[L]]= {
-  var res= immutable.Map[U,List[L]]()
-  for (x<-list){
+def groupByS2[U, L](list: List[L], f: L => U): Map[U, List[L]] = {
+  var res = immutable.Map[U, List[L]]()
+  for (x <- list) {
     //val groupByValue = f(x)
     //res = res.updated(groupByValue,x::res.getOrElse(groupByValue,List()))
-    if(res.contains(f(x))){
-      res = res.updated(f(x),List().appended(x))
-    } else res = res.updated(f(x),List(x))
+    if (res.contains(f(x))) {
+      res = res.updated(f(x), List().appended(x))
+    } else res = res.updated(f(x), List(x))
   }
   res //.mapValues(_.reverse)
 }
 
+groupByS1(l)(_ % 3)
+l.groupBy(_ % 3)
+
 //immutable and aggregation with foldLeft
-def groupByS3[U,L](list: List[L],f: L => U):Map[U,List[L]]= {
-  list.foldLeft(immutable.Map[U,List[L]]()){
+def groupByS3[U, L](list: List[L], f: L => U): Map[U, List[L]] = {
+  list.foldLeft(immutable.Map[U, List[L]]()) {
     (map, x) =>
       val groupByVal = f(x)
-      map.updated(groupByVal, x::map.getOrElse(groupByVal,List.empty))
-  }//.mapValues(_.reverse)
-
+      map.updated(groupByVal, x :: map.getOrElse(groupByVal, List.empty))
+  } //.mapValues(_.reverse)
 }
 
+groupByS1(l)(_ % 3)
+l.groupBy(_ % 3)
 
+/*
 //my try:
 
 //mutable but val
@@ -99,7 +99,7 @@ var map2 = immutable.Map('a'->List())
 groupBy2(l, _ % 3, map2)
 
 l.groupBy(_ % 3)
-
+*/
 
 /*
 *
