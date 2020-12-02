@@ -1,0 +1,18 @@
+# Project exclude paths
+/project/target/
+/target/
+/target/scala-2.13/classes/
+/target/scala-2.13/test-classes/
+
+# intellij idea
+*.log
+*.iml
+*.ipr
+*.iws
+.idea
+# other?
+.history
+.scala_dependencies
+.cache
+.cache-main
+.bsp
